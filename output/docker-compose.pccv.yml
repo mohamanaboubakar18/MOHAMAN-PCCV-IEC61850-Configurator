@@ -1,0 +1,79 @@
+# Manifeste généré automatiquement pour le poste source : PS_COURBEVOIE_92
+# Date de génération : 2026-11-07 12:39:53
+version: '3.8'
+services:
+  ied_prot_dep01:
+    image: registry.mohaman.pccv/virtual_sepam_hta:v1.0
+    container_name: pccv_ied_prot_dep01
+    restart: always
+    cap_add:
+      - NET_ADMIN
+      - SYS_NICE  # Temps réel pour les trames GOOSE / Sampled Values
+    environment:
+      - SUBSTATION=PS_COURBEVOIE_92
+      - IED_NAME=IED_PROT_DEP01
+      - LOGICAL_DEVICE=LD_Protection
+      - ACTIVE_LNS=LLN0,PTOC1,PTRC1,XCBR1
+      - VLAN_ID=100
+      - VLAN_PRIORITY=4
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 256M
+    networks:
+      pccv_process_bus:
+        ipv4_address: 192.168.10.11
+
+  ied_regul_tr01:
+    image: registry.mohaman.pccv/virtual_atcc_transfo:v1.0
+    container_name: pccv_ied_regul_tr01
+    restart: always
+    cap_add:
+      - NET_ADMIN
+      - SYS_NICE  # Temps réel pour les trames GOOSE / Sampled Values
+    environment:
+      - SUBSTATION=PS_COURBEVOIE_92
+      - IED_NAME=IED_REGUL_TR01
+      - LOGICAL_DEVICE=LD_Regulation
+      - ACTIVE_LNS=LLN0,ATCC1,MMXU1
+      - VLAN_ID=100
+      - VLAN_PRIORITY=4
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 128M
+    networks:
+      pccv_process_bus:
+        ipv4_address: 192.168.10.12
+
+  ied_scada_gw:
+    image: registry.mohaman.pccv/virtual_teleconduite_gateway:v1.0
+    container_name: pccv_ied_scada_gw
+    restart: always
+    cap_add:
+      - NET_ADMIN
+      - SYS_NICE  # Temps réel pour les trames GOOSE / Sampled Values
+    environment:
+      - SUBSTATION=PS_COURBEVOIE_92
+      - IED_NAME=IED_SCADA_GW
+      - LOGICAL_DEVICE=LD_Gateway
+      - ACTIVE_LNS=LLN0,GGIO1
+      - VLAN_ID=200
+      - VLAN_PRIORITY=2
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 128M
+    networks:
+      pccv_process_bus:
+        ipv4_address: 192.168.10.250
+
+networks:
+  pccv_process_bus:
+    driver: macvlan
+    ipam:
+      config:
+        - subnet: 192.168.10.0/24

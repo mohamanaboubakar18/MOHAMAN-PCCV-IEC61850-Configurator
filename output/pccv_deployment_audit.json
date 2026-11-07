@@ -1,0 +1,47 @@
+{
+    "substation": "PS_COURBEVOIE_92",
+    "timestamp": "2026-11-07T12:39:53.692183",
+    "total_virtual_ieds": 3,
+    "validation_logs": [
+        "[SUCCÈS] Audit de conformité IEC 61850 / PCCV validé sans erreur bloquante.",
+        "[OK MÉTIER] IED_PROT_DEP01 : Chaîne de protection départ HTA complète (PTOC -> PTRC -> XCBR)."
+    ],
+    "deployed_containers": [
+        {
+            "ied_name": "IED_PROT_DEP01",
+            "type": "Virtual_SEPAM_HTA",
+            "logical_device": "LD_Protection",
+            "logical_nodes": [
+                "LLN0",
+                "PTOC1",
+                "PTRC1",
+                "XCBR1"
+            ],
+            "ip_address": "192.168.10.11",
+            "vlan_id": 100
+        },
+        {
+            "ied_name": "IED_REGUL_TR01",
+            "type": "Virtual_ATCC_Transfo",
+            "logical_device": "LD_Regulation",
+            "logical_nodes": [
+                "LLN0",
+                "ATCC1",
+                "MMXU1"
+            ],
+            "ip_address": "192.168.10.12",
+            "vlan_id": 100
+        },
+        {
+            "ied_name": "IED_SCADA_GW",
+            "type": "Virtual_Teleconduite_Gateway",
+            "logical_device": "LD_Gateway",
+            "logical_nodes": [
+                "LLN0",
+                "GGIO1"
+            ],
+            "ip_address": "192.168.10.250",
+            "vlan_id": 200
+        }
+    ]
+}
